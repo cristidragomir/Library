@@ -4,7 +4,7 @@
     {
         public static Library? lib;
         public static Dictionary<string, BookCommand>? commandToExecute;
-
+        // Test if branches are working correctly
         public static void InitLibrary()
         {
             lib = Library.GetInstance;
