@@ -44,7 +44,7 @@ namespace LibraryTest
                 "No books in the library",
                 ""
             };
-            
+
             RunTest(arrayOfCommands, expectedOutputLines);
         }
 

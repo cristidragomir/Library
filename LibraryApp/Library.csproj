@@ -8,7 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LibraryTest\**" />
+    <EmbeddedResource Remove="LibraryTest\**" />
+    <None Remove="LibraryTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+	<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
 	<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
   </ItemGroup>
 
