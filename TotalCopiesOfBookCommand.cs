@@ -2,7 +2,7 @@
 
 namespace Library
 {
-    internal class TotalCopiesOfBookCommand : BookCommand
+    public class TotalCopiesOfBookCommand : BookCommand
     {
         private uint result;
         private Dictionary<string, uint>? nameCollision;

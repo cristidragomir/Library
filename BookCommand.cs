@@ -3,15 +3,16 @@ using System.Text.RegularExpressions;
 
 namespace Library
 {
-    internal abstract class BookCommand : IAction
+    public abstract class BookCommand : IAction
     {
         public delegate void BookManipulationDelegate(string name, string readerID, DateOnly date, BookAction bookAction);
-
-        private static Dictionary<string, BookManipulationDelegate> options =
+        
+        protected static Library libInstance = Library.GetInstance;
+        private static readonly Dictionary<string, BookManipulationDelegate> options =
             new Dictionary<string, BookManipulationDelegate>
             {
                 { "name", libInstance.ReturnOrBorrowBook },
-                { "code", libInstance.ReturnOrBorrowBookByISBN },
+                { "code", libInstance.ReturnOrBorrowBookByISBN }
             };
         protected enum Message
         {
@@ -31,7 +32,6 @@ namespace Library
             };
 
         protected string? fullCommand;
-        protected static Library libInstance = Library.GetInstance;
 
         public string FullCommand { set { fullCommand = value; } }
 

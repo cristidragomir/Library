@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal class ReturnBookAction : BookAction
+    public class ReturnBookAction : BookAction
     {
         public override void DoAction()
         {

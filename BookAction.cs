@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal abstract class BookAction : IAction
+    public abstract class BookAction : IAction
     {
         protected Book? bookToModify;
         protected Reader? reader;

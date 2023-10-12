@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal class BorrowBookAction : BookAction
+    public class BorrowBookAction : BookAction
     {
         public override void DoAction()
         {

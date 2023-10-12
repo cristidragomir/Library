@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal class Reader
+    public class Reader
     {
         private string name;
 

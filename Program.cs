@@ -1,12 +1,15 @@
 ﻿namespace Library
 {
-    internal class Program
+    public class Program
     {
+        public static bool initDone = false;
         public static Library? lib;
         public static Dictionary<string, BookCommand>? commandToExecute;
-        // Test if branches are working correctly
-        public static void InitLibrary()
+        private static void InitLibrary()
         {
+            if (initDone) return;
+            initDone = true;
+
             lib = Library.GetInstance;
             commandToExecute = new Dictionary<string, BookCommand>();
 
@@ -24,20 +27,21 @@
             commandToExecute["returnbookfrom"] = new ReturnBookCommand();
         }
         
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             InitLibrary();
             if (commandToExecute == null) { return; }
 
             string? command = Console.ReadLine();
-            
+
             while (command != null && command.Trim().Equals("exit") == false)
             {
                 string[] tokens = command.Trim().Split(" ");
                 if (commandToExecute.ContainsKey(tokens[0]) == false)
                 {
                     Console.WriteLine($"\"{command}\" is not a valid command");
-                } else 
+                }
+                else
                 {
                     commandToExecute[tokens[0]].FullCommand = command;
                     commandToExecute[tokens[0]].DoAction();

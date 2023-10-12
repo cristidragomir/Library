@@ -2,7 +2,7 @@
 
 namespace Library
 {
-    internal class AddBookCommand : BookCommand
+    public class AddBookCommand : BookCommand
     {
         private readonly string commandPattern =
             @"^\s*(\w+)\s+""([\-\\\{\}\[\]\d()',?!;:\.\w\s]*)""\s+""([\:\-\w\s]*)""\s+([\d.]+)\s*(?:\s(\d+))?\s*$";

@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal interface IAction
+    public interface IAction
     {
         void DoAction();
     }

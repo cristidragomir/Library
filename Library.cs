@@ -1,6 +1,6 @@
 ﻿namespace Library
 {
-    internal class Library
+    public sealed class Library
     {
         public static readonly uint daysOfBorrowWithoutPenalty = 14;
         public static readonly double penaltyAppliedPerDay = 0.1;
@@ -24,7 +24,7 @@
         private Dictionary<string, Book> bookDetails;
         private Dictionary<string, Reader> readers;
 
-        private static Dictionary<Message, string> message = 
+        private Dictionary<Message, string> message = 
             new Dictionary<Message, string>()
             {
                 { Message.EmptyBookName, "Book name is empty" },
