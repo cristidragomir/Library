@@ -19,7 +19,7 @@
             MultipleBooksSameName,
         }
 
-        private static Library? instance;
+        private static Library? instance = null;
         private Dictionary<string, List<string>> bookNameToISBN;
         private Dictionary<string, Book> bookDetails;
         private Dictionary<string, Reader> readers;
@@ -41,9 +41,7 @@
 
         private Library()
         { 
-            bookNameToISBN = new Dictionary<string, List<string>>();
-            bookDetails = new Dictionary<string, Book>();
-            readers = new Dictionary<string, Reader>();
+            ResetAttributes();
         }
 
         public static Library GetInstance
@@ -172,6 +170,13 @@
                 return;
             }
             ReturnOrBorrowBookByISBN(ISBNs[0], readerID, date, bookAction);
+        }
+        
+        public void ResetAttributes()
+        {
+            bookNameToISBN = new Dictionary<string, List<string>>();
+            bookDetails = new Dictionary<string, Book>();
+            readers = new Dictionary<string, Reader>();
         }
     }
 }

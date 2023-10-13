@@ -2,14 +2,10 @@
 {
     public class Program
     {
-        public static bool initDone = false;
         public static Library? lib;
         public static Dictionary<string, BookCommand>? commandToExecute;
         private static void InitLibrary()
         {
-            if (initDone) return;
-            initDone = true;
-
             lib = Library.GetInstance;
             commandToExecute = new Dictionary<string, BookCommand>();
 
@@ -48,6 +44,8 @@
                 }
                 command = Console.ReadLine();
             }
+
+            lib.ResetAttributes();
         }
     }
 }
