@@ -4,8 +4,8 @@
     {
         public override void DoAction()
         {
-            if (CheckNullValues()) { return; }
-            bookToModify.BorrowBook(reader, date);
+            if (CheckNullValues() == false) { result = false; return; }
+            result = bookToModify.BorrowBook(reader, date);
         }
     }
 }

@@ -44,31 +44,32 @@
             get { return (uint)borrowers.Count; }
         }
 
-        public void BorrowBook(Reader reader, DateOnly date)
+        public bool BorrowBook(Reader reader, DateOnly date)
         {
             uint availableCopies = numberOfBooks - GetNumberOfBorrowers;
 
             if (borrowers.ContainsKey(reader))
             {
                 Console.WriteLine("The reader has already borrowed a copy of this book");
-                return;
+                return false;
             }
             
             if (availableCopies == 0)
             {
                 Console.WriteLine("There are no more copies available for this book + [" + ToString() + "]");
-                return;
+                return false;
             }
 
             borrowers.Add(reader, date);
+            return true;
         }
 
-        public void ReturnBook(Reader reader, DateOnly date)
+        public bool ReturnBook(Reader reader, DateOnly date)
         {
             if (borrowers.ContainsKey(reader) == false)
             {
                 Console.WriteLine("WARNING: This reader is not registered as a borrower of this book");
-                return;
+                return false;
             }
 
             DateOnly dateOfBorrow = borrowers[reader];
@@ -82,12 +83,17 @@
                 Console.WriteLine($"Reader {reader.Name} has to pay {rentPrice} without any penalties");
             } else if (periodOfBorrow > Library.daysOfBorrowWithoutPenalty)
             {
-                double penaltyToPay = (periodOfBorrow - Library.daysOfBorrowWithoutPenalty) * (Library.penaltyAppliedPerDay * rentPrice);
+                int daysAfterDeadline = periodOfBorrow - (int)Library.daysOfBorrowWithoutPenalty;
+                double penaltyToPay = daysAfterDeadline * (Library.penaltyAppliedPerDay * rentPrice);
                 double totalCost = rentPrice + penaltyToPay;
-                Console.WriteLine($"Reader {reader.Name} has to pay {rentPrice} and additional penalty of {penaltyToPay}. TOTAL: {totalCost}");
+                penaltyToPay = Math.Round(penaltyToPay, 2);
+                totalCost = Math.Round(totalCost, 2);
+                Console.WriteLine($"Reader {reader.Name} has to pay {rentPrice} and additional penalty of {penaltyToPay} ({daysAfterDeadline} days). TOTAL: {totalCost}");
             }
 
             borrowers.Remove(reader);
+
+            return true;
         }
 
         public override string ToString()

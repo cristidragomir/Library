@@ -5,6 +5,8 @@
         protected Book? bookToModify;
         protected Reader? reader;
         protected DateOnly date = DateOnly.MinValue;
+        
+        public bool result;
 
         public BookAction() { }
         

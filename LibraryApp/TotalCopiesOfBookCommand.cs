@@ -9,7 +9,7 @@ namespace Library
         private static List<string> options =
             new List<string>() { "name", "code" };
         private static readonly string commandPattern =
-            @"^\s*(\w+)\s+\-\-(name|code)\s+""([\-\\\{\}\[\]\d()',?!;:\.\w\s]*)""\s*$";
+            @"^\s*(\w+)\s+\-\-(\w+)\s+""([\-\\\{\}\[\]\d()',?!;:\.\w\s]*)""\s*$";
 
         private enum SpecificMsg
         {
@@ -58,7 +58,8 @@ namespace Library
                 result = libInstance.GetRemainingUnitsOfBookByISBN(argument);
                 if (result < uint.MaxValue)
                 {
-                    Console.WriteLine($"Remaining copies of the book with ISBN=\"{argument}\" is {result}");
+                    Console.WriteLine($"Remaining copies of the book with ISBN: \"{argument}\" is {result}");
+                    return;
                 }
             } else
             {

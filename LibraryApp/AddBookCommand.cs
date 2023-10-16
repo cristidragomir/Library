@@ -13,7 +13,7 @@ namespace Library
             InvalidNumberOfCopies
         }
 
-        private readonly Dictionary<SpecificMsg, string> specificMsg = 
+        private readonly Dictionary<SpecificMsg, string> specificMsg =
             new Dictionary<SpecificMsg, string>()
             {
                 { SpecificMsg.InvalidPrice, "Price is not provided in the correct format" },
@@ -28,8 +28,9 @@ namespace Library
             string bookName = match.Groups[2].Value;
             string ISBN = match.Groups[3].Value;
             double rentalPrice;
-            
-            bool evaluation = double.TryParse(match.Groups[4].Value, out rentalPrice);   
+
+            bool evaluation = double.TryParse(match.Groups[4].Value, out rentalPrice);
+            evaluation = evaluation && (match.Groups[4].Value[0] != '0' || match.Groups[4].Value.Equals("0") || (match.Groups[4].Value[0] == '0' && match.Groups[4].Value[1] == '.'));
             if (Util.displayMessage(evaluation == false, specificMsg[SpecificMsg.InvalidPrice])) { return; }
 
             uint countCopies = 1;
@@ -37,11 +38,16 @@ namespace Library
             {
                 string strCountCopiesValue = match.Groups[5].Value;
                 evaluation = uint.TryParse(strCountCopiesValue, out countCopies);
+                evaluation = evaluation && strCountCopiesValue[0] != '0';
                 if (Util.displayMessage(evaluation == false, specificMsg[SpecificMsg.InvalidNumberOfCopies])) { return; }
                 if (strCountCopiesValue.Equals("")) { countCopies = 1; }
             }
-            libInstance.AddBook(bookName, ISBN, rentalPrice, countCopies);
-            Console.WriteLine("Book added successfully");
+
+            rentalPrice = Math.Round(rentalPrice, 2);
+            if (libInstance.AddBook(bookName, ISBN, rentalPrice, countCopies))
+            {
+                Console.WriteLine("Book added successfully");
+            }
         }
     }
 }

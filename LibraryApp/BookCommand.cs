@@ -5,7 +5,7 @@ namespace Library
 {
     public abstract class BookCommand : IAction
     {
-        public delegate void BookManipulationDelegate(string name, string readerID, DateOnly date, BookAction bookAction);
+        public delegate bool BookManipulationDelegate(string name, string readerID, DateOnly date, BookAction bookAction);
         
         protected static Library libInstance = Library.GetInstance;
         private static readonly Dictionary<string, BookManipulationDelegate> options =
@@ -67,9 +67,7 @@ namespace Library
                 || Util.displayMessage(evaluation == false, message[Message.InvalidDate])
                 || Util.displayMessage(options.ContainsKey(bookOption) == false, message[Message.UnknownOption])) { return false; }
 
-            options[bookOption](bookIdentifier, readerID, dateParsed, bookAction);
-
-            return true;
+            return options[bookOption](bookIdentifier, readerID, dateParsed, bookAction);
         }
     }
 }

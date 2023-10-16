@@ -3,7 +3,7 @@
     public sealed class Library
     {
         public static readonly uint daysOfBorrowWithoutPenalty = 14;
-        public static readonly double penaltyAppliedPerDay = 0.1;
+        public static readonly double penaltyAppliedPerDay = 1.0/100;
 
         private enum Message
         {
@@ -66,11 +66,12 @@
             return true;
         }
 
-        private void UpdateBookDetails(string ISBN, Book newBook, uint copies)
+        private bool UpdateBookDetails(string ISBN, Book newBook, uint copies)
         {
             bool condition = bookDetails.ContainsKey(ISBN) == true;
-            if (Util.displayMessage(condition, message[Message.AlreadyExistsISBN])) { return; }
+            if (Util.displayMessage(condition, message[Message.AlreadyExistsISBN])) { return false; }
             bookDetails[ISBN] = newBook;
+            return true;
         }
 
         private void UpdateBookNameToISBN(string name, string ISBN)
@@ -85,15 +86,19 @@
             }
         }
 
-        public void AddBook(string name, string ISBN, double rentPrice, uint copies = 1)
+        public bool AddBook(string name, string ISBN, double rentPrice, uint copies = 1)
         { 
-            if (ValidateBookParams(name, ISBN, rentPrice) == false) { return; }
-            if (Util.displayMessage(copies == 0, message[Message.ZeroCopiesArgument])) { return; }
+            if (ValidateBookParams(name, ISBN, rentPrice) == false) { return false; }
 
             Book newBook = new Book(name, ISBN, rentPrice, copies);
 
-            UpdateBookDetails(ISBN, newBook, copies);
-            UpdateBookNameToISBN(name, ISBN);
+            bool retVal = UpdateBookDetails(ISBN, newBook, copies);
+            if (retVal == true)
+            {
+                UpdateBookNameToISBN(name, ISBN);
+            }
+
+            return retVal;
         }
 
         public List<string> GetAllBooks()
@@ -137,29 +142,30 @@
             return result;
         }
 
-        public void ReturnOrBorrowBookByISBN(string ISBN, string readerID, DateOnly date, BookAction bookAction)
+        public bool ReturnOrBorrowBookByISBN(string ISBN, string readerID, DateOnly date, BookAction bookAction)
         {
             bool condition = readers.ContainsKey(readerID) == false;
-            if (Util.displayMessage(condition, message[Message.InexistentReader])) { return; }
+            if (Util.displayMessage(condition, message[Message.InexistentReader])) { return false; }
             Reader reader = readers[readerID];
 
             condition = bookDetails.ContainsKey(ISBN) == false;
-            if (Util.displayMessage(condition, message[Message.InexistentISBN])) { return; }
+            if (Util.displayMessage(condition, message[Message.InexistentISBN])) { return false; }
             bookAction.BookToModify = bookDetails[ISBN];
             bookAction.Reader = reader;
             bookAction.Date = date;
             bookAction.DoAction();
+            return bookAction.result;
         }
 
-        public void ReturnOrBorrowBook(string name, string readerID, DateOnly date, BookAction bookAction)
+        public bool ReturnOrBorrowBook(string name, string readerID, DateOnly date, BookAction bookAction)
         {
+            if (Util.displayMessage(bookNameToISBN.ContainsKey(name) == false, message[Message.InexistentBookName])) { return false; }
             List<string> ISBNs = bookNameToISBN[name];
-            if (Util.displayMessage(ISBNs == null, message[Message.InexistentBookName])) { return; }
 
             bool condition = readers.ContainsKey(readerID) == false;
-            if (Util.displayMessage(condition, message[Message.InexistentReader])) { return; }
+            if (Util.displayMessage(condition, message[Message.InexistentReader])) { return false; }
             
-            condition = ISBNs.Count > 0;
+            condition = ISBNs.Count > 1;
             if (Util.displayMessage(condition, message[Message.MultipleBooksSameName]))
             {
                 foreach (string ISBN in ISBNs)
@@ -167,9 +173,9 @@
                     Console.WriteLine($"\t{ISBN}");
                 }
                 Console.WriteLine("Please specify the ISBN");
-                return;
+                return false;
             }
-            ReturnOrBorrowBookByISBN(ISBNs[0], readerID, date, bookAction);
+            return ReturnOrBorrowBookByISBN(ISBNs[0], readerID, date, bookAction);
         }
         
         public void ResetAttributes()
