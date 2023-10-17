@@ -76,7 +76,7 @@ borrowbookto --(name|code) identifier readerID date
 
 **date** is of the format *dd/mm/yyyy*. Dates of the format *1/1/2000* are also valid.
 
-[*availablecopies*](check-how-many-available-copies-are-for-a-book) command explanations also apply for the current command.
+[*availablecopies*](#check-how-many-available-copies-are-for-a-book) command explanations also apply for the current command.
 
 ### Return a copy of a book to the library
 ```bash
