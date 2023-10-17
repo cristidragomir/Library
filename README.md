@@ -70,7 +70,7 @@ If option **--code**, then identifier represents the ISBN of the book.
 ```bash
 borrowbookto --(name|code) identifier readerID date
 ```
-**identifier**, **readerID**, **date** arguments must be surrounded by ".
+**identifier**, **readerID** arguments must be surrounded by ".
 
 **readerID** is a string denoting the identity of an existent client.
 
